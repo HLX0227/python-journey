@@ -1,0 +1,12 @@
+name=(input("请输入你的名字："))
+age=int(input("请输入你的年龄:"))
+home_city=input("请输入你的家乡城市:")
+stu_city=input("请输入你的学校所在城市:")
+
+print('='*30)
+print(f"你好:{name}")
+print(f"我猜你今年{age}岁")
+print(f"家在{home_city}")
+print(f"在{stu_city}上学")
+print(f"明年你{age+1}岁")
+print('='*30)
