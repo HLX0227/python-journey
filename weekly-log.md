@@ -8,13 +8,24 @@
 ## 第 1 周（日期：____）
 
 **做了什么**
-- 
+- 搭好环境：PyCharm + Python 3.12 + Git，GitHub 仓库建立并打通推送
+- Python 基础：变量、数据类型、f-string、字符串方法（strip/split/upper）
+- input() 接收输入 + int() 类型转换，写了一个个人信息卡片程序
+- 列表：索引、负索引、切片、append/remove/del、for 遍历、enumerate、反转
+- 学会看报错：TypeError / NameError / ValueError
+- 学会调试：用 type() 和 repr() 定位问题，而不是靠猜
 
 **卡在哪**
-- 
+- input() 返回字符串，`"19" + 1` 报 TypeError → 用 int() 解决
+- 误用 string() 转字符串 → Python 里是 str()，没有 string() 这个函数
+- remove('王芳') 报 ValueError → 排查发现列表里套了列表（元素是 ['王芳'] 不是 '王芳'），用 type() 定位后修正
+- git push 报 502 → 代理问题，重试后恢复
 
 **下周做什么**
-- 
+- 字典（dict）基础，把 card.py 改造成字典版本
+- while 循环 + break
+- 函数定义与调用
+- LeetCode 简单题每天 1 道
 
 ---
 
