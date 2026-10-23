@@ -82,3 +82,27 @@
 
 **下周做什么**
 - argparse + TODO 工具
+
+---
+
+## 第 6 周（日期：2026-10-23）
+
+**做了什么**
+- argparse：位置参数 vs 可选参数、default、type=int 自动校验、--help 自动生成
+- 读懂 usage 行：方括号=可选，无方括号=必填
+- 子命令 subparsers：add/list/del/done 命令路由（if/elif args.command）
+- 完成 TODO 工具 todo_app.py：字典列表存任务、json 持久化、异常处理、边界检查
+- 补写了 week06/README.md（功能、用法、技术要点、踩坑日志）
+- 验收：done 99 不崩溃、重启后勾选状态还在（持久化验证通过）
+
+**卡在哪**
+- 命令少了 python 前缀 → pythonw 无控制台，"无事发生"之谜
+- `python python ...` 打重了 → 读报错发现把 python 当成了文件名
+- 注册了 del 但没写 elif 分支 → "两层不一致"：--help 里有它、跑起来掉进 else
+- 差一错误：id < len(tasks) 应为 <=，导致最后一项无法操作
+- del 是 Python 关键字不能当变量名，但可以作为字符串命令名
+
+**下周做什么**
+- 给 todo_app 写 pytest 单元测试（阶段 1 最后一块拼图）
+- 开始阶段 2：SQL 基础 + LeetCode 数据库题
+- 补 LeetCode：数组/字符串简单题每天 1 道（这两周欠账了 😄）
