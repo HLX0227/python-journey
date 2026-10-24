@@ -46,25 +46,26 @@ def cmd_del(tasks,id):
         print('无效的编号')
 
 # ===== 主流程 =====
-parser = argparse.ArgumentParser(description='TODO 工具')
-sub = parser.add_subparsers(dest='command')
-p_add = sub.add_parser('add'); p_add.add_argument('text')
-sub.add_parser('list')
-p_done = sub.add_parser('done'); p_done.add_argument('id', type=int)
-p_del = sub.add_parser('del'); p_del.add_argument('id', type=int)
-args = parser.parse_args()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='TODO 工具')
+    sub = parser.add_subparsers(dest='command')
+    p_add = sub.add_parser('add'); p_add.add_argument('text')
+    sub.add_parser('list')
+    p_done = sub.add_parser('done'); p_done.add_argument('id', type=int)
+    p_del = sub.add_parser('del'); p_del.add_argument('id', type=int)
+    args = parser.parse_args()
 
-tasks = load_tasks()
+    tasks = load_tasks()
 
-if args.command == 'add':
-    cmd_add(tasks, args.text)
-elif args.command == 'list':
-    cmd_list(tasks)
-elif args.command == 'done':
-    cmd_done(tasks, args.id)     # ← 你写
-elif args.command == 'del':
-    cmd_del(tasks, args.id)      # ← 你写
-else:
-    parser.print_help()
+    if args.command == 'add':
+        cmd_add(tasks, args.text)
+    elif args.command == 'list':
+        cmd_list(tasks)
+    elif args.command == 'done':
+        cmd_done(tasks, args.id)     # ← 你写
+    elif args.command == 'del':
+        cmd_del(tasks, args.id)      # ← 你写
+    else:
+        parser.print_help()
 
-save_tasks(tasks)                # 开头加载、结尾存盘，上周的骨架
+    save_tasks(tasks)                # 开头加载、结尾存盘，上周的骨架
