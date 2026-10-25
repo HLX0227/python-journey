@@ -106,3 +106,62 @@
 - 给 todo_app 写 pytest 单元测试（阶段 1 最后一块拼图）
 - 开始阶段 2：SQL 基础 + LeetCode 数据库题
 - 补 LeetCode：数组/字符串简单题每天 1 道（这两周欠账了 😄）
+
+## 第 7 周（日期：2026-10-24）
+
+**做了什么**
+- 安装 pytest（第一次用 pip 装第三方库），给 TODO 工具写了 4 个单元测试
+- 学会 assert 断言：测试"不崩溃"和"不改坏数据"两种检查
+- 理解 import 机制：import 会把整个文件执行一遍
+- 给 todo_app.py 加上 `if __name__ == '__main__':` 门禁，
+  让代码"直接运行"和"被 import"两种用法互不干扰
+- 搞懂 pytest 两个规则：只收集 test_ 开头的函数；
+  测试文件要和被测代码同目录（import 搜索范围）
+- 阶段 1 结业：命令行 TODO 工具 + 测试 + README ✅
+
+**卡在哪**
+- ModuleNotFoundError：测试放 week07、代码在 week06，隔壁楼看不见
+  → 把测试移到代码旁边解决
+- SystemExit: 2：import todo_app 时主流程的 parse_args() 被连带执行
+  → 加 __name__ 门禁解决
+- no tests ran：函数名写成 tasks_add，pytest 不认
+  → 改名 test_add（只收集 test_ 开头的）
+- 路径打错：命令里写 week07 实际在 week06 → not found 就是字面意思
+
+**下周做什么**
+- 阶段 2 开始：SQL 基础（SELECT/WHERE/JION/GROUP BY）
+- LeetCode 数据库题库，每天 1-2 题
+- 补上欠的算法题（数组/字符串简单题）
+- 了解：把 todo.json 的数据搬进 SQLite 数据库（SQL 第一课的实战）
+
+---
+
+## 第 8 周（日期：2026-10-25）
+
+**做了什么**
+- 第一次盲写测试（top_by 通用找最大）：算法主干全对，
+  暴露出 or 短路顺序和初始值语义两个缺口
+- SQL 第一课（sqlite3，零安装真数据库）：
+  CREATE TABLE IF NOT EXISTS / INSERT + ? 占位符 / commit / SELECT / UPDATE
+- 观察并理解了三个数据库特性：
+  ① 数据跨运行持久存在（第二次跑变 4 行，INSERT 不幂等）
+  ② AUTOINCREMENT 编号只涨不回头（id 从 3 继续）
+  ③ UPDATE 的效果永久改变后续查询（"1 不见了"= 被 WHERE done=0 过滤，
+     数据没丢，状态变了）
+- 建立 SQL 记忆策略：背 20% 思维（CRUD 四动作、? 防注入、commit 纪律），
+  查 80% 语法（拼写忘了就查文档，查得快也是职业技能）
+
+**卡在哪**
+- IF NOT EXIST 少个 S → 学会读 SQL 报错：near "XXX" = 读到这个词就懵了
+- 文件夹建错位置（week08 建在根目录不在 practice 里）→ No such file 时
+  信 traceback/dir 的磁盘真相，不信记忆；相对路径认"站在哪运行"不认"文件在哪"
+- 项目里出现两个 mydb.db → 工作目录决定数据库落在哪，删掉多余的
+- "查询没区别" → 因为 6 行数据 done 全是 0，没有可过滤的差异；
+  先怀疑数据没差异，再怀疑代码有 bug
+- UPDATE 语句混搭：写死了 id=2 却还挂着参数 (1,) → 口诀：几个 ? 给几个值
+
+**下周做什么**
+- SQL 第二课：DELETE + 多表 JOIN 初步
+- 实战：把 todo_app 的 json 存储改造成 SQLite 存储（阶段 2 里程碑）
+- LeetCode 数据库题开刷（简单 10 题）
+- 盲写题：add_task(text)（sqlite3 插入函数）
