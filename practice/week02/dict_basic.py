@@ -15,5 +15,5 @@ for key,value in student.items():
     print(f'{key}:{value}')
 
 print(student.get('phone','未填写'))
-print(student['phone'])
+
 

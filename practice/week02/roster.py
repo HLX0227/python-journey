@@ -6,11 +6,11 @@ students = [
     {"name":"陈静","age":19,"score":88},
 ]
 
+
 s=0
 for i in students:
     print(f"{i['name']}:{i['score']}分")
     s+=i["score"]
-
 Average_s=s/len(students)
 print(Average_s)
 

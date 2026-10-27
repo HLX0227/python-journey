@@ -20,6 +20,17 @@ def add_task(text):
     conn.close()
     return new_id
 
+def del_task(task_id):
+    conn = sqlite3.connect('mydb.db')
+    cur = conn.cursor()
+    cur.execute('DELETE FROM tasks WHERE id=(?)',(task_id,))
+    conn.commit()
+    deleted = cur.rowcount
+    conn.close()
+    return deleted
+
 print(add_task('盲写练习'))
+print(del_task(2))
+
 conn = sqlite3.connect('mydb.db')
 print(conn.execute('SELECT * FROM tasks').fetchall())
