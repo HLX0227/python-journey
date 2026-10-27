@@ -197,3 +197,37 @@
 - 迁移时同步改造 pytest（查库断言版）
 - LeetCode 数据库简单题开刷（本周欠账 😄）
 - 盲写题预告：del_task(task_id)，用 rowcount 返回删除行数
+
+---
+
+## 第 10 周（日期：2026-10-27）
+
+**做了什么**
+- 第三次盲写：del_task(task_id) 一次写通核心（DELETE+commit+close+rowcount）
+- 大项目完成：TODO 工具 2.0——存储引擎从 JSON 迁移到 SQLite，
+  命令行体验保持不变（argparse 子命令、if/elif 路由一行没改）
+- 数据层重写：init_db 建表 / load_tasks 用 sqlite3.Row 按列名取值 /
+  cmd_add·done·del 改为即时 INSERT·UPDATE·DELETE+commit
+- 用 rowcount 做诚实报告：操作 0 行时告知"没有该任务"，替代手动 len 边界检查
+- cmd_list 显示真实 id：界面编号=数据库主键，杜绝删行后改错目标
+- 实验验证 AUTOINCREMENT：删掉 id=2 后新任务领到 id=3，编号出现"空洞"
+  ——空洞恰恰证明身份系统在工作
+- 更新 week10/README.md（1.0 vs 2.0 对比表、技术要点、迁移踩坑清单）
+
+**卡在哪**
+- connect() 漏传 DB → 盲写时写熟了，迁移时反而漏（肌肉记忆也会偷懒）
+- 主流程 tasks 未定义 → 换发动机时忘了取消 load_tasks() 的注释
+- SELECT FROM 漏列清单 → near "FROM": syntax error，用读 SQL 报错法秒定位
+- schema 漂移二犯：代码加了 AUTOINCREMENT 但 id 仍被复用 →
+  旧表是早期版本建的，IF NOT EXISTS 跳过重建 → 删库重建；
+  新武器：SELECT sql FROM sqlite_master 查表真实建表语句
+- 修正旧认知：INTEGER PRIMARY KEY 不带 AUTOINCREMENT 会复用最大 id
+- 事务边界首体验：del 时 NameError 崩在 commit 之后 → 删除已生效，
+  "程序崩了"≠"什么都没发生"
+- f-string 漏 f：print('没有id为{id}的任务') 原样吐花括号
+
+**下周做什么**
+- 给 todo_db 写迁移版 pytest（查库断言 + 测试专用内存库 :memory:）
+- 把旧 todo.json 的数据搬进 todo.db（数据迁移实战）
+- LeetCode 数据库简单题开刷（连续两周欠账了 😄😄）
+- 阶段 2 后半程：pandas 数据处理入门
