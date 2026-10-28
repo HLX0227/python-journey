@@ -25,6 +25,7 @@
 - `del` 不能当变量名 → 是 Python 关键字；但可以作为字符串命令名注册
 - 函数没写 return → 默默返回 None，调用方拿到空 → 忘 return 是高频事故
 - `if __name__ == '__main__':` → import 会把整个文件执行一遍，主流程要加门禁，否则 import 即运行
+- import 时崩 `NameError: name 'conn' is not defined` → 门禁留了缝：`conn.close()` 写在 if 块**外面**，import 时照样执行 → 凡依赖运行时变量（conn/args）的代码必须缩进进门禁内；"import 有副作用"是库开发头号大忌
 
 ## 调试方法论
 
@@ -41,6 +42,12 @@
 - assert 查空气列表 → 测试要验证函数的**真实承诺**（数据库函数就查库，不是查本地变量）
 - 第二次跑测试行数翻倍 → 往共享状态写的测试不幂等 → 用 uuid 唯一标记，或测试前清场
 - `SELECT *` 导致断言下标错位 → 测试和正式代码要**指定列名**，不依赖列序
+- 测"不误伤"必须先造"在场者" → 空表上 `cmd_done(conn, 99)` 测不出任何边界行为；
+  先 add 一条真任务，再操作不存在的 id，断言真任务未被误伤
+- `rows[98]` 是"第 98 行"不是"id=98" → fetchall 只返回查到的行，下标≠主键；
+  查特定行用 `WHERE id = ?`，不靠下标
+- 测试库建表语句和真库不一致（多写 NOT NULL）→ schema 漂移从测试侧溜进来；
+  测试的 CREATE TABLE 必须和 init_db 一字不差，最好共用同一份定义
 
 ## SQL / SQLite
 
@@ -58,6 +65,7 @@
 - 名字只存一份、其他地方存 id 引用、JOIN 现场关联 → 改一处处处生效（反冗余，数据库设计第一原理）
 - **commit 之后才崩溃 = 写操作已经生效**（del 时 NameError 崩在 commit 后，下次运行 id=1 真没了）→ 程序崩了 ≠ 什么都没发生，写操作以 commit 为界（事务边界意识）
 - 界面编号用 enumerate 位置序号，数据库操作却按真实 id → 删行后两者分家，done 会改错行 → 显示也用 `row['id']`，让"看到的编号=操作的编号"（编号空洞恰恰证明身份系统在工作）
+- `Incorrect number of bindings supplied. uses 1, and there are 0 supplied` → SQL 里有 `?` 却没递参数元组 → 口诀：几个 ? 给几个值；单元素参数也要带逗号 `('x',)`
 
 ---
 
