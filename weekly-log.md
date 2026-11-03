@@ -231,3 +231,47 @@
 - 把旧 todo.json 的数据搬进 todo.db（数据迁移实战）
 - LeetCode 数据库简单题开刷（连续两周欠账了 😄😄）
 - 阶段 2 后半程：pandas 数据处理入门
+
+---
+
+## 第 11 周（日期：2026-10-28 ~ 11-03，含三天忙人模式）
+
+**做了什么**
+- 依赖注入改造：todo_db 四个命令函数全部改收 conn，主流程发通行证；
+  cmd_list 不碰库所以不收——该注入的注入，不该注入的不硬塞
+- 测试迁移：fresh_db() 用 :memory: 内存库，测试天然幂等、不碰真库；
+  3 passed（test_add / test_done / test_done_wrong_id）
+- count_by(conn, done_value) 上线：list 末尾新增"未完结 X · 已完成 Y"汇总，
+  练习题变产品功能
+- summary(conn)：函数调用函数，返回 total/done/todo 字典；
+  讨论 total 两种算法（COUNT(*) vs done+todo）的隐藏假设并写注释
+- longest_task(conn)：SQL 排序挑选（ORDER BY LENGTH DESC LIMIT 1），
+  学会"一件事一台机器干"，去掉冗余的 Python 冠军循环
+- 数据搬家 migrate.py：todo.json → todo.db，带完成状态迁移，
+  集合判重 + 连跑两遍验证幂等（第二遍新增 0 条）
+- pandas 第一课：read_sql 读库、布尔筛选、value_counts、str.len 向量化、
+  sort_values；三个一行挑战全过；交叉验证（pandas 与 SQL 统计结果一致）
+
+**卡在哪**
+- import todo_db 崩 NameError(conn) → 门禁留缝：conn.close() 在 if 块外；
+  凡依赖运行时变量的代码必须缩进进门禁
+- Incorrect number of bindings → 几个 ? 给几个值，单元素元组带逗号
+- 测"不误伤"先造"在场者"：空表测不出边界行为；rows[98] 是第98行不是 id98
+- unable to open database file → dirname 少数一层，practice 叠了两层；
+  路径报错第一动作 print(路径)
+- Cannot operate on a closed database → conn.close() 跑在后续使用之前，
+  关门顺序也是设计
+- tuple indices must be integers（两次）→ 默认行是元组只认数字下标；
+  其中一次是导师模板里的雷：没设 conn.row_factory = sqlite3.Row 就写 row['text']
+  → 教训：谁写的代码都敢怀疑，抄来的模板逐行问"为什么能跑"
+- SELECT FORM → FROM 打反；traceback 穿过 pandas 时先看"它手里拿的是什么"，
+  第三方库往往只是信使
+- pandas 筛选后行号不连续 → index 是标签不是位置：过滤杀死位置，杀不死身份
+  （列表下标/数据库id/pandas标签，三个世界同一条规律）
+
+**下周做什么**
+- 阶段 2 毕业项目：用 pandas 分析一份真实数据集
+  （读取 → 清洗 → 三个业务问题 → 结论报告）
+- done_rate(conn)：完成率 + 除零保护（空表 total=0 时除法会怎样）
+- LeetCode 数据库简单题开刷（连续三周欠账了 😄😄😄）
+- 忙人模式备忘：每周 1 次 × 1 小时也可，回来的次数才作数
