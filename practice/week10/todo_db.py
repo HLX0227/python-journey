@@ -32,6 +32,7 @@ def cmd_list(tasks):
     for row in tasks:
         mark = '✓' if row['done'] else ' '
         print(f"{row['id']}. [{mark}] {row['text']}")
+    print(f"未完结 {count_by(conn, 0)} · 已完成 {count_by(conn, 1)}")
 
 def cmd_done(conn,id):
     cur = conn.execute('UPDATE tasks SET done = 1 WHERE id=(?)',(id,))
@@ -49,6 +50,11 @@ def cmd_del(conn,id):
         print(f'没有id为{id}的任务')
     else:
         print(f'已删除第{id}项')
+
+
+def count_by(conn,done_value):
+    row = conn.execute('SELECT count(*) FROM tasks WHERE done = ?', (done_value,)).fetchone()
+    return row[0]
 
 # ===== 主流程 =====
 if __name__ == '__main__':
@@ -68,6 +74,7 @@ if __name__ == '__main__':
         cmd_add(conn, args.text)
     elif args.command == 'list':
         cmd_list(load_tasks(conn))
+        print(f"未完结 {count_by(conn, 0)} · 已完成 {count_by(conn, 1)}")
     elif args.command == 'done':
         cmd_done(conn, args.id)     # ← 你写
     elif args.command == 'del':
