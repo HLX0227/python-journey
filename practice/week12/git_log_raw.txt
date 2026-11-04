@@ -1,0 +1,92 @@
+﻿COMMIT|c12c261|2026-11-03 15:37|week11 收官：summary+pandas第一课+数据搬家+周报
+ 2 files changed, 64 insertions(+), 1 deletion(-)
+
+COMMIT|56a6ab5|2026-11-03 15:35|week11 收官：summary+pandas第一课+三挑战
+ 3 files changed, 54 insertions(+)
+
+COMMIT|a311254|2026-10-28 20:53|mistakes.md 更新：门禁漏缝/bindings/测试边界三坑
+ 1 file changed, 8 insertions(+)
+
+COMMIT|103bdeb|2026-10-28 20:44|week11 依赖注入+测试3passed
+ 3 files changed, 62 insertions(+), 24 deletions(-)
+
+COMMIT|52dff12|2026-10-27 21:44|week10 TODO工具2.0发布：SQLite迁移、README、踩坑本、周报
+ 15 files changed, 279 insertions(+), 5 deletions(-)
+
+COMMIT|dad2e51|2026-10-27 21:39|week10 todo_db 2.0发布
+ 2 files changed, 35 insertions(+), 2 deletions(-)
+
+COMMIT|643ad14|2026-10-27 21:35|week10 todo_db 2.0发布
+ 1 file changed, 90 insertions(+)
+
+COMMIT|5111e9b|2026-10-26 22:20|week09 周报
+ 1 file changed, 41 insertions(+), 9 deletions(-)
+
+COMMIT|644450a|2026-10-26 22:13|week09 JOIN+改名实验通过，阶段2数据库感觉建立
+ 1 file changed, 43 insertions(+)
+
+COMMIT|1ad9b84|2026-10-26 20:47|week09 测试通过（幂等+列序修复）
+ 1 file changed, 25 insertions(+)
+
+COMMIT|fe9fe93|2026-10-26 20:47|week09 测试通过（幂等+列序修复）
+ 2 files changed, 30 insertions(+)
+
+COMMIT|486631e|2026-10-25 21:15|week08 周报
+ 1 file changed, 60 insertions(+), 1 deletion(-)
+
+COMMIT|b9e16a4|2026-10-25 21:11|week08 SQL第一课
+ 1 file changed, 27 insertions(+)
+
+COMMIT|5dac1b9|2026-10-24 14:39| week06 pytest 4 passed，阶段1结业
+ 3 files changed, 46 insertions(+), 19 deletions(-)
+
+COMMIT|b4aedcc|2026-10-23 22:15|week06 TODO工具与README
+ 2 files changed, 95 insertions(+), 1 deletion(-)
+
+COMMIT|2ed46c9|2026-10-23 21:45|week06 del子命令与路由修复
+ 2 files changed, 41 insertions(+)
+
+COMMIT|15ed071|2026-10-20 21:21|week05 周报
+ 1 file changed, 28 insertions(+)
+
+COMMIT|822d866|2026-10-20 21:19|week05 CRUD完成，存盘移至末尾
+ 2 files changed, 104 insertions(+)
+
+COMMIT|37835bb|2026-10-19 18:57|week04 数据持久化完成
+ 3 files changed, 93 insertions(+)
+
+COMMIT|3985c39|2026-10-19 17:02|周报
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+COMMIT|075ef99|2026-10-19 17:00|week03 函数重构完成
+ 1 file changed, 12 insertions(+)
+
+COMMIT|307b957|2026-10-19 16:59|week03 函数重构完成
+ 1 file changed, 45 insertions(+)
+
+COMMIT|3f8045a|2026-10-19 15:03|week02: 字典列表综合练习
+ 1 file changed, 35 insertions(+)
+
+COMMIT|4543c97|2026-10-19 14:24|week02:字典基础
+ 2 files changed, 31 insertions(+)
+
+COMMIT|08ecb95|2026-10-17 16:53|前两周周报
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+COMMIT|071e9c1|2026-10-17 16:49|week2
+ 1 file changed, 22 insertions(+)
+
+COMMIT|d40b818|2026-10-17 16:25|week1
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+COMMIT|ce43658|2026-10-17 16:19|week1
+ 2 files changed, 29 insertions(+)
+
+COMMIT|685cb13|2026-10-17 14:38|学习路线
+ 3 files changed, 122 insertions(+)
+
+COMMIT|c16186d|2026-10-17 14:30|移除 .idea
+ 1 file changed, 8 deletions(-)
+
+COMMIT|1c268f5|2026-10-17 14:24|Initial commit
+ 2 files changed, 9 insertions(+)

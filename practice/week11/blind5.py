@@ -28,5 +28,15 @@ def summary(conn):
     }
 print(summary(conn))
 
+def done_rate(conn):
+    total = count_by(conn,0) + count_by(conn,1)
+    if total == 0:
+        return 0
+    return round(count_by(conn,1) / total, 2)
+
+print('完成率：', done_rate(conn))
+empty = sqlite3.connect(':memory:')
+empty.execute('CREATE TABLE tasks (id INTEGER PRIMARY KEY, text TEXT, done INTEGER)')
+print(done_rate(empty))
 
 conn.close()
