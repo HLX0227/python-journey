@@ -34,9 +34,15 @@ def done_rate(conn):
         return 0
     return round(count_by(conn,1) / total, 2)
 
+def search_tasks(conn,keyword):
+    rows = conn.execute('SELECT * from tasks where text like ?', (f'%{keyword}%',)).fetchall()
+    return rows
+print(search_tasks(conn,'学'))
 print('完成率：', done_rate(conn))
 empty = sqlite3.connect(':memory:')
 empty.execute('CREATE TABLE tasks (id INTEGER PRIMARY KEY, text TEXT, done INTEGER)')
 print(done_rate(empty))
+
+
 
 conn.close()
