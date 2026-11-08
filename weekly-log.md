@@ -273,5 +273,67 @@
 - 阶段 2 毕业项目：用 pandas 分析一份真实数据集
   （读取 → 清洗 → 三个业务问题 → 结论报告）
 - done_rate(conn)：完成率 + 除零保护（空表 total=0 时除法会怎样）
-- LeetCode 数据库简单题开刷（连续三周欠账了 😄😄😄）
+- LeetCode 数据库简单题开刷（连续三周欠账了 😄😄）
 - 忙人模式备忘：每周 1 次 × 1 小时也可，回来的次数才作数
+
+---
+
+## 第 12 周（日期：2026-11-04）
+
+**做了什么**
+- done_rate(conn)：完成率 + 除零保护；用 :memory: 空库验证返回 0 不崩
+- 阶段 2 毕业项目：解析自己仓库的真实 git 历史（31 次提交 / 1552 行新增）
+  → DataFrame → 三个业务问题（星期分布 / Top3 高产日 / 深夜提交数）
+- 产出 week12/REPORT.md：三条发现 + 方法自检节（主动交代数据局限）
+- 交叉对账：Top3 高产日与 weekly-log 最长三篇互证通过
+- 解析器三问自测全过：split('|',3) 保险丝 / 缺统计行=默认值 0 / _ 丢弃手势
+
+**卡在哪**
+- done_rate() takes 0 positional arguments but 1 was given → 定义漏 conn 参数；
+  更深：函数体偷偷用全局 conn = 隐藏依赖，测试喂不进数据 → 参数写进签名
+- 正则那行看不懂 → 果断换成 split+关键词六行版：能解释的代码才属于自己
+- "代码跑通了但什么都看不懂" → 停下逐行弄懂 + 三问自测，
+  跑通后停下来弄懂才是工程师和粘贴员的分界线
+
+**下周做什么**
+- 阶段 3 开门：Flask 第一课（路由 / JSON / 状态码）
+- search_tasks(conn, keyword)：LIKE + % 包参数
+- LeetCode 数据库题欠账第四周 😄😄😄
+
+---
+
+## 第 13 周（日期：2026-11-07 ~ 11-08）
+
+**做了什么**
+- Flask 第一课：server.py 三扇门（/ 、/tasks 、/tasks/<int:id>），
+  浏览器亲眼看到程序"站着等敲门"，终端日志每请求一行
+- 状态码语言上手：200 看成功 / 201 生成功 / 400 递的没法用 /
+  404 查无此门 / 405 门不接这种敲法
+- /search 门：query 参数 request.args.get + LIKE '%kw%' 模糊搜索；
+  空搜索=全列表（%% 匹配一切）作为设计决定写进注释
+- POST /tasks：methods=['GET','POST'] 同门两种敲法；
+  get_json(silent=True) + strip 安检 + lastrowid 回传 + 201
+- client_test.py：requests 客户端五连验证（201/400/400/200/列表+1），
+  API 的 server 与 client 两端都是自己写的
+- jsonify 中文：app.json.ensure_ascii = False（json.dump 同款开关）
+
+**卡在哪**
+- import todo_db 找不到 → sys.path.append 亲手改搜索清单；
+  并认清两张清单：Python 运行时的 sys.path vs PyCharm 静态检查的清单
+  （IDE 标红 ≠ 运行报错，终端才是法官）
+- sqlite3.connect('todo_db.DB') 带引号 = 打开名叫这串字符的文件（空库雷）
+  → 不带引号才是取变量
+- home 门牌被写成 /tasks → 根地址 404 + 门牌冲突（先登记的赢）
+- {'error', '...'} 逗号写成集合 → jsonify 崩 TypeError；花括号内逗号=集合、冒号=字典
+- search 的 get('') 参数名写空 → None 拼字符串崩；fetchone 用在搜索门（下一颗雷，提前排掉）
+- ConnectionRefusedError → 服务器没在跑；学会双终端模型（一个站岗一个敲门）
+  与排查顺序：活着吗 → 门对吗 → 函数对吗
+- r.json() 对纯文本响应崩 JSONDecodeError → .json() 是断言不是转换，文本门用 .text
+- 客户端不幂等：每跑一次 client_test 插一条"POST 测试"（id 8/9/10 三条躺库）
+  → 下次用 DELETE 门清场
+
+**下周做什么**
+- PUT /tasks/<id> 与 DELETE /tasks/<id>：CRUD 全网齐，
+  顺手用 DELETE 清掉三条 POST 测试
+- 安全三件套意识：验证（已会）/ 认证（待学）/ 关 debug（已知为什么）
+- LeetCode 数据库题欠账第五周 😄😄😄😄
