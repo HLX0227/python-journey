@@ -13,7 +13,7 @@ app.json.ensure_ascii = False
 def home():
     return '你好，这是我的第一个服务器'
 
-@app.route('/tasks', methods=['GET', 'POST'])
+@app.route('/tasks', methods=['GET', 'POST', ])
 def tasks():
     # 处理 POST 请求：创建新任务
     if request.method == 'POST':
@@ -53,7 +53,33 @@ def search():
     rows = conn.execute('SELECT * FROM tasks WHERE text like ?', ('%' + kw + '%',)).fetchall()
     conn.close()
     return jsonify([dict(r) for r in rows])
+@app.route('/tasks/<int:task_id>', methods=['DELETE'])
+def del_task_api(task_id):
+    conn = sqlite3.connect(todo_db.DB)
+    conn.row_factory = sqlite3.Row
+    cur = conn.execute('DELETE FROM tasks WHERE id = ?', (task_id,))
+    deleted = cur.rowcount
+    conn.commit()
+    conn.close()
+    if deleted == 0:
+        return jsonify({'error': '任务不存在'}), 404
+    return jsonify({'deleted': deleted})
+    # 提示：删了几行？rowcount == 0 说明什么？
 
+@app.route('/tasks/<int:task_id>', methods=['PUT'])
+def update_task(task_id):
+    data = request.get_json(silent=True)
+    if not data or not data.get('text', '').strip():
+        return jsonify({'error': '任务内容不能为空'}), 400      # 安检在门口
+    conn = sqlite3.connect(todo_db.DB)
+    cur = conn.execute('UPDATE tasks SET text = ? WHERE id = ?',
+                       (data['text'].strip(), task_id))
+    conn.commit()
+    changed = cur.rowcount                                      # cur 记账，
+    conn.close()
+    if changed == 0:
+        return jsonify({'error': '任务不存在'}), 404            # 查户口在里屋
+    return jsonify({'id': task_id, 'text': data['text'].strip()})
 
 if __name__ == '__main__':
     app.run(debug=True)
