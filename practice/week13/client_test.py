@@ -43,3 +43,12 @@ print('剩余:', len(requests.get(BASE + '/tasks').json()))
 r = requests.get(BASE+'/tasks')
 print(r.status_code,len(r.json()))
 
+# PATCH 翻转完成状态
+r = requests.patch(BASE + '/tasks/3/done')
+print(r.status_code, r.json())      # 期望 200，done 从 1 变 0（或反过来）
+
+r = requests.patch(BASE + '/tasks/3/done')
+print(r.status_code, r.json())      # 再翻一次，回到原状态 ← 翻转的闭环
+
+r = requests.patch(BASE + '/tasks/999/done')
+print(r.status_code, r.json())      # 期望 404，查无此任务

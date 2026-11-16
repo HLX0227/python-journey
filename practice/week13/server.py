@@ -81,6 +81,21 @@ def update_task(task_id):
         return jsonify({'error': '任务不存在'}), 404            # 查户口在里屋
     return jsonify({'id': task_id, 'text': data['text'].strip()})
 
+@app.route('/tasks/<int:task_id>/done', methods=['PATCH'])
+def toggle_done(task_id):
+    conn = sqlite3.connect(todo_db.DB)
+    cur = conn.execute('UPDATE tasks SET done = 1-done WHERE id = ?', (task_id,))
+    conn.commit()
+    changed = cur.rowcount
+    conn.close()
+    if changed == 0:
+         return jsonify({'error': '任务不存在'}), 404
+    row = sqlite3.connect(todo_db.DB)
+    row.row_factory = sqlite3.Row
+    item = row.execute('SELECT * FROM tasks WHERE id = ?', (task_id,)).fetchone()
+    row.close()
+    return jsonify(dict(item))
+
 if __name__ == '__main__':
     app.run(debug=True)
 

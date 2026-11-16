@@ -337,3 +337,58 @@
   顺手用 DELETE 清掉三条 POST 测试
 - 安全三件套意识：验证（已会）/ 认证（待学）/ 关 debug（已知为什么）
 - LeetCode 数据库题欠账第五周 😄😄😄😄
+
+---
+
+## 第 14 周（日期：2026-11-11）
+
+**做了什么**
+- DELETE /tasks/<int:id> 上线：rowcount 报告删除行数，0 行返回 404
+- PUT /tasks/<int:id> 上线：整体替换 text，安检 400 在查户口 404 之前
+- client_test 扩展到九连：201/400/400/200/200 + PUT 200/404/400 +
+  DELETE 200/404，全部按预期返回
+- 状态码阶梯四格全踩：ConnectionRefused → 405 → 500 → 200/404
+- 四敲法语义表建立：GET 看 / POST 生 / PUT 整体替换 / DELETE 删
+- DELETE 幂等之辩：实现选"第二次返回 404"派，并在注释写明理由
+
+**卡在哪**
+- conn.rowcount 报 AttributeError：rowcount 住在 cursor 上，
+  conn.execute() 的返回值才是 cursor → cur = conn.execute(...)
+- 改了路由但 DELETE 返回 405：运行中的服务器 ≠ 屏幕上的代码
+  → 编辑器星号=没保存；Address already in use=旧进程占端口；
+  四拍子：保存→停旧→起新→看 Running on
+- 405 的响应体是 HTML，r.json() 照旧 JSONDecodeError
+  → 状态码先于响应体看：print(r.status_code, r.text)
+- 重复 DELETE 同 id 返回 404 被当成故障：
+  那是诚实报告在正常工作，先分清哪条输出是好消息
+- 清场 id 写死 (9,10)，实际 POST 测试已经涨到 id=17
+  → 按内容点名（过滤 text == 'POST 测试'）而不是按记忆下标
+
+**下周做什么**
+- 按内容批量清场，回到 5 条原始任务基线
+- PATCH /tasks/<id>/done：翻转完成状态
+- 周报补记第 14、15 周
+
+---
+
+## 第 15 周（日期：2026-11-16）
+
+**做了什么**
+- 按内容清场：待清 id 列表由 GET 结果过滤文本生成，删到剩余 5 条基线
+- PUT 还原被改名的 3 号任务（c改名了 → c）
+- PATCH /tasks/<int:id>/done 上线：done = 1 - done 一行完成翻转
+- 翻转闭环验证：200 done:0 → 200 done:1（回原状）→ 404 查无此任务
+- 顺手补上 row.close()，保持"开了就关"的习惯
+- API 设计辨析：翻转（PATCH toggle，不幂等）vs 赋值（PUT + {"done": true}，幂等）
+
+**卡在哪**
+- 清场时硬编码 id 再次失效（id 已涨到 21）
+  → 内容点名才是可靠定位，位置和记忆都不可靠
+- PATCH 路由要先保存+重启才生效，四拍子第二次用顺了
+- 翻转语义天然不幂等，是设计选择不是 bug；要知道自己选的是哪种
+
+**下周做什么**
+- 给 API 穿人衣服：Flask 模板渲染 HTML 页面，
+  让不用代码的人也能点按钮用 TODO（阶段 3 第二课）
+- 安全三件套：认证（最简单的 token 方案）/ 关闭 debug / 限流意识
+- LeetCode 数据库题欠账第六周 😄😄😄😄😄
