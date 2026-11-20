@@ -392,3 +392,34 @@
   让不用代码的人也能点按钮用 TODO（阶段 3 第二课）
 - 安全三件套：认证（最简单的 token 方案）/ 关闭 debug / 限流意识
 - LeetCode 数据库题欠账第六周 😄😄😄😄😄
+
+---
+
+## 第 16 周（日期：2026-11-20）
+
+**做了什么**
+- 先手写 `/plain` 路由体会痛点：字符串拼 HTML，越加功能越乱
+- 建 `templates/index.html`：`{% for %}` 循环 + `{% if %}` 判断 + `{{ }}` 输出，
+  `/` 改成 `render_template('index.html', tasks=rows)`，页面正常显示 5 条任务
+- `/add` 表单：`request.form.get('text')` 读表单（不是 get_json），
+  INSERT 后 `redirect(url_for('home'))` —— Post/Redirect/Get 模式
+- 实测 XSS 转义：加一条 `<b>粗体</b><script>alert(1)</script>`，
+  页面原样显示尖括号文字，不粗也不弹窗 → Jinja 自动转义在岗
+- PRG 验证：提交后按 F5 不重复插入
+
+**卡在哪**
+- 访问 `/` 返回 405 Method Not Allowed → `/` 被改成了 POST-only，
+  浏览器发的是 GET；修正：`/` 留 GET 给 home，`/add` 收 POST 给表单
+- 把清理脚本 `requests.delete(...)` 粘进了 server.py 第 122 行 →
+  服务器启动时自己敲自己（5000 端口还没起）→ ConnectionRefused，
+  且 app.run() 永远执行不到；服务端与客户端必须分文件分终端
+- 表单提交是 `application/x-www-form-urlencoded`，不是 JSON →
+  `request.get_json()` 拿到 None，必须用 `request.form.get()`
+- SQL 字符串下的红波浪线是 PyCharm 的 SQL 方言检查噪音，不是错误
+- 编辑器星号 = 没保存 = debug 重启没发生（四拍子第三次生效）
+
+**下周做什么**
+- 给页面装操作按钮：纯 HTML 表单（勾选/删除，简单但刷新）或
+  一小段 JS fetch 调 JSON API（不刷新，现代做法）
+- 前后端打通那一刻：前端到后端的完整闭环
+- LeetCode 数据库题欠账第七周 😄😄😄😄😄😄
