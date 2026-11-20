@@ -52,3 +52,6 @@ print(r.status_code, r.json())      # 再翻一次，回到原状态 ← 翻转�
 
 r = requests.patch(BASE + '/tasks/999/done')
 print(r.status_code, r.json())      # 期望 404，查无此任务
+
+for tid in (22, 23):
+    print(tid, requests.delete(f'http://127.0.0.1:5000/tasks/{tid}').status_code)

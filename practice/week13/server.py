@@ -1,17 +1,21 @@
-from flask import Flask,jsonify,request
+from flask import Flask, jsonify, request, render_template
 import sqlite3
 import sys
 import os
 sys.path.append(os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'week10'))
 import todo_db
-
+from flask import redirect,url_for
 
 app = Flask(__name__)
 app.json.ensure_ascii = False
 @app.route('/')
 def home():
-    return '你好，这是我的第一个服务器'
+    conn = sqlite3.connect(todo_db.DB)
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute('SELECT * FROM tasks').fetchall()
+    conn.close()
+    return render_template('index.html', tasks=rows)
 
 @app.route('/tasks', methods=['GET', 'POST', ])
 def tasks():
@@ -64,7 +68,6 @@ def del_task_api(task_id):
     if deleted == 0:
         return jsonify({'error': '任务不存在'}), 404
     return jsonify({'deleted': deleted})
-    # 提示：删了几行？rowcount == 0 说明什么？
 
 @app.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
@@ -95,6 +98,28 @@ def toggle_done(task_id):
     item = row.execute('SELECT * FROM tasks WHERE id = ?', (task_id,)).fetchone()
     row.close()
     return jsonify(dict(item))
+@app.route('/plain')
+def plain():
+    conn = sqlite3.connect(todo_db.DB)
+    rows = conn.execute('SELECT * FROM tasks').fetchall()
+    conn.close()
+    html = '<ul>'
+    for r in rows:
+        html = html + '<li>' + r[1] + '</li>'
+    html = html + '</ul>'
+    return html
+
+@app.route('/add',methods = ['POST'])
+def add_form():
+    text = request.form.get('text','').strip()
+    if text:
+        conn = sqlite3.connect(todo_db.DB)
+        conn.execute('INSERT INTO tasks (text) VALUES (?)', (text,))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('home'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang = 'zh'>
+<head>
+    <meta charset = 'utf-8'>
+    <title>我的 TODO</title>
+</head>
+<body>
+<h1> 我的任务</h1>
+<ul>
+    {% for t in tasks %}
+    <li>{% if t['done'] %}✅{% else %}⬜{% endif %} {{t['id']}}.{{t['text']}}</li>
+    {% endfor %}
+</ul>
+
+<form method = 'post' action = '/add'>
+    <input name = 'text' placeholder = '新任务' required>
+    <button type="submit">添加</button>
+</form>
+</body>
+</html>
